@@ -1,22 +1,34 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:user_login/appointmentScreens/services.dart';
 import 'package:user_login/appointmentScreens/summaryDialog.dart';
 
 class Newappointment extends StatefulWidget {
-  final dynamic services;
-  const Newappointment({super.key, this.services});
+  //final dynamic services;
+  final dynamic hint;
+  const Newappointment({super.key, this.hint});
 
   @override
   State<Newappointment> createState() => _NewappointmentState();
 }
 
 class _NewappointmentState extends State<Newappointment> {
-  List<dynamic> services2 = [];
-  
-  String? selectedService;
+  // List<dynamic> services2 = [];
+
+  String selectedHint = "Select Service";
 
   List<String> pets = ['Bella', 'Max', 'Charlie', 'Luna'];
   String? selectedPet;
+
+  List<String> services = [
+    'Bathing',
+    'Grooming',
+    'Hair Triming',
+    'Vaccination',
+  ];
+  String? selectedServices;
 
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
@@ -49,13 +61,19 @@ class _NewappointmentState extends State<Newappointment> {
 
   @override
   void initState() {
-    services2 = widget.services;
+    if (widget.hint == null) {
+      selectedHint = selectedHint;
+    } else {
+      selectedHint = widget.hint;
+      selectedServices = selectedHint;
+    }
+    //services2 = widget.services;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("services $services2");
+    // print("services $services2");
     return Center(
       child: SafeArea(
         child: Scaffold(
@@ -91,25 +109,35 @@ class _NewappointmentState extends State<Newappointment> {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: Colors.amber),
                   ),
                   child: Center(
                     child: DropdownButtonFormField<String>(
                       isExpanded: true,
-                      value: selectedService,
+                      value: selectedServices,
+                      // value: selectedService,
                       decoration: InputDecoration.collapsed(
-                        hintText: 'Select a service',
+                        hintText: selectedHint,
                       ),
-                      items: services2.map((item) {
+                      items: services.map((item) {
+                        //item = "Bathing";
                         return DropdownMenuItem<String>(
-                          value: item["service_id"].toString(),
-                          child: Text(item["name"]),
+                          value: item,
+                          child: Text(item),
+                          //value: item["service_id"].toString(),
+                          //child: Text(item["service_name"]),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                        setState(() {
-                          selectedService = newValue;
-                        });
+                        if (selectedHint == selectedHint) {
+                          setState(() {
+                            selectedServices = newValue;
+                          });
+                        } else {
+                          setState(() {
+                            selectedServices = selectedHint;
+                          });
+                        }
                       },
                     ),
                   ),
@@ -124,7 +152,7 @@ class _NewappointmentState extends State<Newappointment> {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: Colors.amber),
                   ),
                   child: Center(
                     child: DropdownButtonFormField<String>(
@@ -169,7 +197,7 @@ class _NewappointmentState extends State<Newappointment> {
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.amber),
                         ),
                         child: Center(
                           child: Align(
@@ -193,7 +221,7 @@ class _NewappointmentState extends State<Newappointment> {
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: Colors.amber),
                           ),
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -216,7 +244,7 @@ class _NewappointmentState extends State<Newappointment> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      if (selectedService == null) {
+                      if (selectedServices == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Please select a service."),
@@ -242,7 +270,7 @@ class _NewappointmentState extends State<Newappointment> {
                         showDialog(
                           context: context,
                           builder: (_) => Summarydialog(
-                            service: selectedService,
+                            service: selectedServices,
                             pet: selectedPet,
                             Date: selectedDate,
                             Time: selectedTime,

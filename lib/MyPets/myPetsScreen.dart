@@ -64,7 +64,7 @@ class _MypetsscreenState extends State<Mypetsscreen> {
                   ),
                   const SizedBox(width: 20),
 
-                  // Bella (no navigation)
+                  
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(12),

@@ -18,14 +18,14 @@ class _AppointmentscreenState extends State<Appointmentscreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late Timer _timer;
-  DateTime nextAppointment = DateTime(2025, 6, 20, 14, 30); // example
+  DateTime nextAppointment = DateTime(2025, 6, 20, 14, 30);
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      setState(() {}); // re-render countdown every minute
+      setState(() {});
     });
   }
 
@@ -58,7 +58,11 @@ class _AppointmentscreenState extends State<Appointmentscreen>
               IconButton(
                 icon: Icon(Icons.add, size: 30),
                 onPressed: () {
-                  fetchServices();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => Newappointment()),
+                  );
+                  //fetchServices();
                 },
               ),
             ],
@@ -66,7 +70,6 @@ class _AppointmentscreenState extends State<Appointmentscreen>
         ],
       ),
       body: Column(
-
         children: [
           SizedBox(height: 20),
           Text(
@@ -136,8 +139,9 @@ class _AppointmentscreenState extends State<Appointmentscreen>
   }
 
   //call service API
-  void fetchServices() async {
-    String url = "http://192.168.209.242:8082/api/auth/services";
+  /*void fetchServices() async {
+    print("here");
+    String url = "http://10.67.208.242:8082/api/auth/services";
     Dio dio = Dio();
     Options options = Options();
     options.contentType = 'application/x-www-form-urlencoded';
@@ -169,7 +173,7 @@ class _AppointmentscreenState extends State<Appointmentscreen>
         SnackBar(content: Text('Network error: ${exception.message}')),
       );
     } catch (exception) {}
-  }
+  }*/
 }
 
 // Dummy widget for appointment list

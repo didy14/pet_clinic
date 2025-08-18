@@ -4,8 +4,16 @@ class Summarydialog extends StatefulWidget {
   final dynamic service;
   final dynamic pet;
   final dynamic Date;
-  final dynamic Time;
-  Summarydialog({super.key, this.service, this.pet, this.Date, this.Time});
+  final dynamic selectedTime;
+  final dynamic splashData;
+  Summarydialog({
+    super.key,
+    this.service,
+    this.pet,
+    this.Date,
+    this.selectedTime,
+    this.splashData,
+  });
 
   @override
   State<Summarydialog> createState() => _SummarydialogState();
@@ -14,6 +22,7 @@ class Summarydialog extends StatefulWidget {
 class _SummarydialogState extends State<Summarydialog> {
   @override
   Widget build(BuildContext context) {
+    print("Time${widget.selectedTime}");
     return Center(
       child: Material(
         child: SizedBox(
@@ -28,8 +37,8 @@ class _SummarydialogState extends State<Summarydialog> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 20),
                     child: Icon(
-                      Icons.check,
-                      size: 50,
+                      Icons.check_box,
+                      size: 4.0,
                       color: Colors.green[400],
                     ),
                   ),
@@ -41,7 +50,12 @@ class _SummarydialogState extends State<Summarydialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top : 50, left: 20, bottom: 20, right: 20),
+                  padding: const EdgeInsets.only(
+                    top: 50,
+                    left: 20,
+                    bottom: 20,
+                    right: 20,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -58,42 +72,72 @@ class _SummarydialogState extends State<Summarydialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    bottom: 20,
+                    right: 20,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text("Pet", style: TextStyle(fontSize: 17)),
-                    Text(widget.pet,
-                    style: TextStyle(
+                    children: [
+                      Text("Pet", style: TextStyle(fontSize: 17)),
+                      Text(
+                        widget.pet,
+                        style: TextStyle(
                           fontSize: 17,
                           color: Colors.orangeAccent,
                           fontWeight: FontWeight.bold,
-                        ),)],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Padding(
-                    padding: const EdgeInsets.only(left: 20 ,right: 20,bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Date", style: TextStyle(fontSize: 17)),
-                        Text("Time", style: TextStyle(fontSize: 17)),
-                      ],
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Date", style: TextStyle(fontSize: 17)),
+                          Text(
+                            widget.Date.toString().substring(0, 10),
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orangeAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20 ,right: 20,bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.Date.toString().substring(0,10), 
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.orangeAccent),),
-                        Text(widget.Time.toString().substring(10,15), 
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.orangeAccent),),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Time", style: TextStyle(fontSize: 17)),
+
+                          Text(
+                            widget.selectedTime.toString(),
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orangeAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
                   ],
                 ),
               ],

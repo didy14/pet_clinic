@@ -11,8 +11,9 @@ class Addpets extends StatefulWidget {
 
 class _AddpetsState extends State<Addpets> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
+  final TextEditingController sexController = TextEditingController();
   final TextEditingController speciesController = TextEditingController();
+  final TextEditingController colorController = TextEditingController();
   File? imageFile;
 
   Future<void> pickImage() async {
@@ -26,10 +27,15 @@ class _AddpetsState extends State<Addpets> {
 
   void submitPet() {
     final name = nameController.text.trim();
-    final age = ageController.text.trim();
+    final sex = sexController.text.trim();
+    final color = colorController.text.trim();
     final species = speciesController.text.trim();
 
-    if (name.isEmpty || age.isEmpty || species.isEmpty || imageFile == null) {
+    if (name.isEmpty ||
+        sex.isEmpty ||
+        species.isEmpty ||
+        color.isEmpty ||
+        imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please complete all fields")),
       );
@@ -52,7 +58,9 @@ class _AddpetsState extends State<Addpets> {
               onTap: pickImage,
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: imageFile != null ? FileImage(imageFile!) : null,
+                backgroundImage: imageFile != null
+                    ? FileImage(imageFile!)
+                    : null,
                 child: imageFile == null
                     ? const Icon(Icons.add_a_photo, size: 40)
                     : null,
@@ -65,20 +73,23 @@ class _AddpetsState extends State<Addpets> {
             ),
             const SizedBox(height: 10),
             TextField(
-              controller: ageController,
-              decoration: const InputDecoration(labelText: "Age"),
-              keyboardType: TextInputType.number,
+              controller: colorController,
+              decoration: const InputDecoration(labelText: "Color"),
+              //keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
+            TextField(
+              controller: sexController,
+              decoration: const InputDecoration(labelText: "Sex"),
+              //keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 10),
             TextField(
               controller: speciesController,
               decoration: const InputDecoration(labelText: "Species"),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: submitPet,
-              child: const Text("Add Pet"),
-            ),
+            ElevatedButton(onPressed: submitPet, child: const Text("Add Pet")),
           ],
         ),
       ),

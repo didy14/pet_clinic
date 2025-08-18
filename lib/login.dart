@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_login/Dashboards/receptionist_dashboard.dart';
 import 'package:user_login/Dashboards/user_dashboard.dart';
 import 'dart:ui';
 
 import 'package:user_login/registration.dart';
+import 'package:user_login/utilis/config.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _isloading = false;
-
-  Future<void> loginUserwithEmailandPassword() async {
+  //fire base
+  /*Future<void> loginUserwithEmailandPassword() async {
     try {
       final UserCredential = FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
@@ -31,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       print(e.message);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => Dashboard()),
-                      ),
-                      //onPressed: () => validate(),
+                      onPressed: () => validate(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
@@ -141,46 +139,42 @@ class _LoginPageState extends State<LoginPage> {
                           : Text('SIGN IN', style: TextStyle(letterSpacing: 2)),
                     ),
                     const SizedBox(height: 20),
-                    TextButton(onPressed: () async {
-                      await loginUserwithEmailandPassword();
-                    }, child: 
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => Registration()),
-                      ),
-                    
-                    
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Row(
-                            children: [
-                              //Checkbox(value: false, onChanged: null),
-                              Text(
-                                "dont you have an account? ",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                          
-                          
-                              Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 14,
-                                ),
-                              ),
-                          
-                            ],
-                          ),
+                    TextButton(
+                      onPressed: () {
+                        //await loginUserwithEmailandPassword();
+                      },
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => Registration()),
+                        ),
 
-                          
-                        ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            Row(
+                              children: [
+                                //Checkbox(value: false, onChanged: null),
+                                Text(
+                                  "dont you have an account? ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+
+                                Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     ),
                     /*Center(
                       child: Text(
@@ -199,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   //validation
-  /*validate() {
+  validate() {
     setState(() {
       _isloading = true;
     });
@@ -217,14 +211,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loginRequest() async {
-    String url = "http://10.67.208.242:8082/api/auth/register";
+    String url = Config.login;
     Dio dio = Dio();
-    Options options = Options();
+    Options options = Options(responseType: ResponseType.plain);
     options.contentType = 'application/x-www-form-urlencoded';
 
-    String postedData =
-        "username=${emailController.text}&password=${passwordController.text}";
+    Map<String, String> postedData = {
+      "user_email": emailController.text,
+      "password": passwordController.text,
+    };
 
+    String jsonPlayload = jsonEncode(postedData);
     try {
       Response response = await dio.post(
         url,
@@ -232,38 +229,85 @@ class _LoginPageState extends State<LoginPage> {
         options: options,
       );
 
-      print(" Register response: $response");
+      print(" Login response 😊😊: $response");
       dynamic decodedString = jsonDecode(response.toString());
-      dynamic code = decodedString['code'];
       String message = decodedString['message'];
 
-      if (code == 200) {
-        setState(() {
-          _isloading = false;
-        });
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Dashboard()),
-        );
+      if (message == "Authenticated") {
+        String token = decodedString['token'];
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString(Config.token, token);
+
+        fetchingSplash();
       } else {
         setState(() {
           _isloading = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
     } on DioError catch (exception) {
       setState(() {
         _isloading = false;
       });
       print("Dio error: $exception");
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Invalid userID or password')));
+    } catch (exception) {
+      setState(() {
+        _isloading = false;
+      });
+    }
+  }
+
+  void fetchingSplash() async {
+    String url = Config.splash;
+    Dio dio = Dio();
+    Options options = Options(responseType: ResponseType.plain);
+    options.contentType = 'application/x-www-form-urlencoded';
+    try {
+      Response response = await dio.get(url, options: options);
+
+      print(" PullingData response 😊😊: $response");
+      dynamic decodedString = jsonDecode(response.toString());
+      dynamic code = decodedString['code'];
+      String message = decodedString['message'];
       
+      if (code == 200) {
+        dynamic data = decodedString['data'];
+        String splashData = decodedString['data'].toString();
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString(Config.splashData, splashData);
+        
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard(
+          splashData: data
+        )));
+      } else {
+        setState(() {
+          _isloading = false;
+        });
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    } on DioError catch (exception) {
+      setState(() {
+        _isloading = false;
+      });
+      print("Dio error: $exception");
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Network error: ${exception.message}')),
+        SnackBar(
+          content: Text('data fetching failed. please  try again later'),
+        ),
       );
     } catch (exception) {
       setState(() {
         _isloading = false;
       });
     }
-  }*/
+  }
 }

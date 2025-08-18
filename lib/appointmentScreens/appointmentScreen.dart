@@ -8,7 +8,9 @@ import 'package:user_login/appointmentScreens/newAppointment.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Appointmentscreen extends StatefulWidget {
-  const Appointmentscreen({super.key});
+  final dynamic  splashData;
+  final dynamic splasData;
+  const Appointmentscreen({super.key, this.splashData, this.splasData});
 
   @override
   State<Appointmentscreen> createState() => _AppointmentscreenState();
@@ -60,9 +62,13 @@ class _AppointmentscreenState extends State<Appointmentscreen>
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => Newappointment()),
+                    MaterialPageRoute(
+                      builder: (_) => Newappointment(
+                        splashData: widget.splashData,
+                        splasData: widget.splasData,
+                        ),
+                    ),
                   );
-                  //fetchServices();
                 },
               ),
             ],
@@ -118,7 +124,8 @@ class _AppointmentscreenState extends State<Appointmentscreen>
             indicatorColor: Colors.amber,
             tabs: const [
               Tab(text: "All"),
-              Tab(text: "Vaccination"),
+              Tab(text: "Upcoming"),
+               Tab(text: "Completed"),
               Tab(text: "Pending"),
             ],
           ),
@@ -128,7 +135,8 @@ class _AppointmentscreenState extends State<Appointmentscreen>
               controller: _tabController,
               children: [
                 AppointmentList(filter: 'all'),
-                AppointmentList(filter: 'vaccination'),
+                AppointmentList(filter: 'Upcoming'),
+                AppointmentList(filter: 'Completed'),
                 AppointmentList(filter: 'pending'),
               ],
             ),

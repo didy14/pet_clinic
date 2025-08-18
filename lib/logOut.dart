@@ -16,7 +16,7 @@ class _LogoutState extends State<Logout> {
         borderRadius: BorderRadius.circular(10),
         child: SizedBox(
           width: 300,
-          height: 300,
+          height: 280,
           child: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Column(
@@ -30,9 +30,9 @@ class _LogoutState extends State<Logout> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: Icon(
-                        CupertinoIcons.xmark_circle,
+                        CupertinoIcons.xmark_circle_fill,
                         size: 40,
-                        color: Colors.grey[400],
+                        color: Colors.red,
                       ),
                     ),
                   ),
@@ -41,7 +41,7 @@ class _LogoutState extends State<Logout> {
                   child: Text(
                     "Are you sure you want to LogOut?",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.redAccent, fontSize: 17),
+                    style: TextStyle(color: Colors.black, fontSize: 17),
                   ),
                 ),
 
@@ -61,7 +61,7 @@ class _LogoutState extends State<Logout> {
                           width: 70,
                           height: 30,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.red,
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -82,10 +82,10 @@ class _LogoutState extends State<Logout> {
                           ).showSnackBar(SnackBar(content: Text("Logged out")));
                         },
                         child: Container(
-                          width: 50,
+                          width: 70,
                           height: 30,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.green,
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: Colors.grey),
                           ),

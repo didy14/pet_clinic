@@ -17,9 +17,9 @@ import 'package:user_login/myProfileScreen.dart';
 import 'package:user_login/notificationScreen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final dynamic splashData;
+  const Dashboard({super.key, this.splashData});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -30,364 +30,378 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: Sidebar(),
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        elevation: 0,
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            fontSize: 17,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        key: _scaffoldKey,
+        endDrawer: Sidebar(),
+        appBar: AppBar(
+          backgroundColor: Colors.amber,
+          elevation: 0,
+          title: const Text(
+            'Home',
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.notifications,
-                  size: 35,
-                  color: Colors.black,
-                ),
-                //open side bar
-                onPressed: () {
-                  _scaffoldKey.currentState?.openEndDrawer();
-                },
-              ),
-              Positioned(
-                top: 5,
-                right: 8,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      '2',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          actions: [
+            Stack(
               children: [
-                const SizedBox(height: 20),
-                const Text(
-                  "Welcome..",
-                  style: TextStyle(fontSize: 28, color: Colors.black),
-                ),
-                const SizedBox(height: 3),
-                const Text(
-                  "Your Pet is here now!",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                IconButton(
+                  icon: const Icon(
+                    Icons.notifications,
+                    size: 35,
                     color: Colors.black,
                   ),
+                  //open side bar
+                  onPressed: () {
+                    _scaffoldKey.currentState?.openEndDrawer();
+                  },
                 ),
-
-                const SizedBox(height: 10),
-
-                //  Horizontal Sliding Ads Section
-                const Text(
-                  "Promoted Ads",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-                Divider(),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 120,
-                  width: 400,
-                  child: PageView(
-                    controller: PageController(viewportFraction: 0.9),
-                    scrollDirection: Axis.horizontal,
-                    children: const [
-                      AdItem(
-                        title: "",
-                        //icon: Icons.add,
-                        imageUrl: 'assets/images/ads8.png',
-                        //color: Colors.orange,
-                      ),
-                      AdItem(
-                        title: "",
-                        imageUrl: 'assets/images/ads.jpg',
-                        //icon: Icons.local_hospital,
-                        //color: Colors.green,
-                      ),
-
-                      AdItem(
-                        title: "",
-                        imageUrl: 'assets/images/ads7.png',
-                        //icon: Icons.local_hospital,
-                        //color: Colors.green,
-                      ),
-                      AdItem(title: "", imageUrl: 'assets/images/ads4.jpg'),
-                      AdItem(
-                        title: '',
-                        imageUrl: 'assets/images/ads5.png',
-                        //icon: Icons.pets,
-                        //color: Colors.purple,
-                      ),
-                      AdItem(title: '', imageUrl: 'assets/images/ads6.png'),
-                    ],
-                  ),
-                ),
-                Divider(),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Smallwidget(
-                        title: "Appointments",
-                        icon: Icons.calendar_month,
-                        color: Colors.amber,
-                        navigate: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => Newappointment(),
-                            ),
-                          );
-                        },
-                      ),
-
-                      Smallwidget(
-                        title: "Emergency",
-                        icon: CupertinoIcons.clock,
-                        color: Colors.greenAccent,
-                        navigate: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => Emergency()),
-                          );
-                        },
-                      ),
-
-                      Smallwidget(
-                        title: "Find clinic",
-                        icon: Icons.location_on_outlined,
-                        color: Colors.redAccent,
-                        navigate: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => Location()),
-                          );
-                        },
-                      ),
-
-                      Smallwidget(
-                        icon: Icons.phone,
-                        color: Colors.green,
-                        title: "Contact",
-                        navigate: () {
-                         showDialog(context: context, builder: (_) => Contact());
-                        },
-                       
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: const SizedBox(height: 30),
+                Positioned(
+                  top: 5,
+                  right: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
                     ),
-                    const Text(
-                      "Our Services",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 190),
-                      child: GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => Services()),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        '2',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
                       ),
                     ),
-                  ],
-                ),
-
-                Divider(endIndent: 15, thickness: 0.5),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      ServiceItem(
-                        title: "Bathing: ",
-                        text:
-                            " Keep your pets fresh, clean and happy with our gentle bath and grooming",
-                        ImageUrl: 'assets/images/bathing.png',
-                        hint: "Bathing",
-                        //color: Colors.blue,
-                      ),
-
-                      ServiceItem(
-                        title: "Hair Triming:",
-                        text:
-                            "Stylish and hygienic haircuts tailored to your pet’s breed and comfort.",
-                        ImageUrl: 'assets/images/haircutting.png',
-                        hint: "Hair Triming",
-                        //color: Colors.pink,
-                      ),
-                      ServiceItem(
-                        title: "Vaccinations:",
-                        text:
-                            "Protect your pet’s health with timely and trusted vaccinations from licensed vets",
-                        ImageUrl: 'assets/images/vaccination.png',
-                        hint: "Vaccination"
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Text(
-                      ' Our Veterinarians.',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 150),
-                      child: GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => Doctorspage()),
-                        ),
-                        child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
-                      ),
-                    ),
-                  ],
-                ),
-
-                Divider(endIndent: 15, thickness: 0.5),
-
-                //for Doctors
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Doctorwidget(
-                        title: "Dr Dora Johnson",
-                        ImageUrl: 'assets/images/Dr1.png',
-                        description: " General Practise",
-                        experiance: "3 years of experiance",
-                        status: "Available",
-                        color: Colors.blue,
-                      ),
-
-                      Doctorwidget(
-                        title: "Dr Maria Elvis",
-                        ImageUrl: 'assets/images/Dr2.png',
-                        description: "Surgery & Emergency",
-                        experiance: "5 years of experiance",
-                        status: "Busy",
-                        color: Colors.grey,
-                      ),
-
-                      Doctorwidget(
-                        title: "Dr Elly Dvid",
-                        ImageUrl: 'assets/images/Dr3.png',
-                        description: "",
-                        experiance: " 1 year of experiance",
-                        status: "Available",
-                        color: Colors.blue,
-                      ),
-                    ],
                   ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
-      ),
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Welcome..",
+                    style: TextStyle(fontSize: 28, color: Colors.black),
+                  ),
+                  const SizedBox(height: 3),
+                  const Text(
+                    "Your Pet is here now!",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
 
-      floatingActionButton: SpeedDial(
-        spaceBetweenChildren: 20,
-        icon: Icons.menu,
-        activeIcon: Icons.close,
-        backgroundColor: Colors.amber,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.settings, color: Colors.amberAccent, size: 40),
-            label: 'Settings',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => Myprofilescreen()),
-            ),
-          ),
-          SpeedDialChild(
-            //elevation: 20,
-            child: Icon(
-              Icons.health_and_safety,
-              color: Colors.amberAccent,
-              size: 40,
-            ),
-            label: 'Medical Report',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => MedicalReportScreen(
-                  name: "Max",
-                  species: "cat",
-                  age: "3",
-                  imagePath: 'assets/images/Max.jpg',
-                ),
+                  const SizedBox(height: 10),
+
+                  //  Horizontal Sliding Ads Section
+                  const Text(
+                    "Promoted Ads",
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                  Divider(),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 120,
+                    width: 400,
+                    child: PageView(
+                      controller: PageController(viewportFraction: 0.9),
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        AdItem(
+                          title: "",
+                          //icon: Icons.add,
+                          imageUrl: 'assets/images/ads8.png',
+                          //color: Colors.orange,
+                        ),
+                        AdItem(
+                          title: "",
+                          imageUrl: 'assets/images/ads.jpg',
+                          //icon: Icons.local_hospital,
+                          //color: Colors.green,
+                        ),
+
+                        AdItem(
+                          title: "",
+                          imageUrl: 'assets/images/ads7.png',
+                          //icon: Icons.local_hospital,
+                          //color: Colors.green,
+                        ),
+                        AdItem(title: "", imageUrl: 'assets/images/ads4.jpg'),
+                        AdItem(
+                          title: '',
+                          imageUrl: 'assets/images/ads5.png',
+                          //icon: Icons.pets,
+                          //color: Colors.purple,
+                        ),
+                        AdItem(title: '', imageUrl: 'assets/images/ads6.png'),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Smallwidget(
+                          title: "Appointments",
+                          icon: Icons.calendar_month,
+                          color: Colors.amber,
+                          navigate: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Newappointment(
+                                  splasData: widget.splashData,
+                                  splashData: widget.splashData,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        Smallwidget(
+                          title: "Emergency",
+                          icon: CupertinoIcons.clock,
+                          color: Colors.greenAccent,
+                          navigate: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => Emergency()),
+                            );
+                          },
+                        ),
+
+                        Smallwidget(
+                          title: "Find clinic",
+                          icon: Icons.location_on_outlined,
+                          color: Colors.redAccent,
+                          navigate: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => Location()),
+                            );
+                          },
+                        ),
+
+                        Smallwidget(
+                          icon: Icons.phone,
+                          color: Colors.green,
+                          title: "Contact",
+                          navigate: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => Contact(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: const SizedBox(height: 30),
+                      ),
+                      const Text(
+                        "Our Services",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 190),
+                        child: GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => Services()),
+                          ),
+                          child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Divider(endIndent: 15, thickness: 0.5),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ServiceItem(
+                          splashData: widget.splashData,
+                          title: "Bathing: ",
+                          text:
+                              " Keep your pets fresh, clean and happy with our gentle bath and grooming",
+                          ImageUrl: 'assets/images/bathing.png',
+                          hint: "Bathing",
+                          //color: Colors.blue,
+                        ),
+
+                        ServiceItem(
+                          splashData: widget.splashData,
+                          title: "Hair Triming:",
+                          text:
+                              "Stylish and hygienic haircuts tailored to your pet’s breed and comfort.",
+                          ImageUrl: 'assets/images/haircutting.png',
+                          hint: "Hair Triming",
+                          //color: Colors.pink,
+                        ),
+                        ServiceItem(
+                          splashData: widget.splashData,
+                          title: "Vaccinations:",
+                          text:
+                              "Protect your pet’s health with timely and trusted vaccinations from licensed vets",
+                          ImageUrl: 'assets/images/vaccination.png',
+                          hint: "Vaccination",
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Text(
+                        ' Our Veterinarians.',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 150),
+                        child: GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => Doctorspage()),
+                          ),
+                          child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Divider(endIndent: 15, thickness: 0.5),
+
+                  //for Doctors
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Doctorwidget(
+                          title: "Dr Dora Johnson",
+                          ImageUrl: 'assets/images/Dr1.png',
+                          description: " General Practise",
+                          experiance: "3 years of experiance",
+                          status: "Available",
+                          color: Colors.blue,
+                        ),
+
+                        Doctorwidget(
+                          title: "Dr Maria Elvis",
+                          ImageUrl: 'assets/images/Dr2.png',
+                          description: "Surgery & Emergency",
+                          experiance: "5 years of experiance",
+                          status: "Busy",
+                          color: Colors.grey,
+                        ),
+
+                        Doctorwidget(
+                          title: "Dr Elly Dvid",
+                          ImageUrl: 'assets/images/Dr3.png',
+                          description: "",
+                          experiance: " 1 year of experiance",
+                          status: "Available",
+                          color: Colors.blue,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+        ),
+//for menu
+        floatingActionButton: SpeedDial(
+          spaceBetweenChildren: 20,
+          icon: Icons.menu,
+          activeIcon: Icons.close,
+          backgroundColor: Colors.amber,
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.settings, color: Colors.amberAccent, size: 40),
+              label: 'Settings',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => Myprofilescreen()),
+              ),
+            ),
+            SpeedDialChild(
+              //elevation: 20,
+              child: Icon(
+                Icons.health_and_safety,
+                color: Colors.amberAccent,
+                size: 40,
+              ),
+              label: 'Medical Report',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MedicalReportScreen(
+                    name: "Max",
+                    species: "cat",
+                    age: "3",
+                    imagePath: 'assets/images/Max.jpg',
+                  ),
+                ),
+              ),
+            ),
 
-          SpeedDialChild(
-            child: Icon(Icons.add, color: Colors.amberAccent, size: 40),
-            label: 'Add Pet',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => Mypetsscreen()),
+            SpeedDialChild(
+              child: Icon(Icons.add, color: Colors.amberAccent, size: 40),
+              label: 'Add Pet',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => Mypetsscreen()),
+              ),
             ),
-          ),
-          SpeedDialChild(
-            child: Icon(
-              Icons.calendar_month,
-              color: Colors.amberAccent,
-              size: 40,
+            SpeedDialChild(
+              child: Icon(
+                Icons.calendar_month,
+                color: Colors.amberAccent,
+                size: 40,
+              ),
+              label: 'Appointments',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => Appointmentscreen(
+                  splasData: widget.splashData,
+                  splashData: widget.splashData,
+                )),
+              ),
             ),
-            label: 'Appointments',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => Appointmentscreen()),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -547,7 +561,8 @@ class ServiceItem extends StatelessWidget {
   final String text;
   final ImageUrl;
   final Color color;
-  final String  hint;
+  final String hint;
+  final dynamic splashData;
 
   const ServiceItem({
     super.key,
@@ -555,7 +570,7 @@ class ServiceItem extends StatelessWidget {
     required this.text,
     required this.ImageUrl,
     this.color = Colors.white,
-    required this.hint,
+    required this.hint, this.splashData,
   });
 
   @override
@@ -604,9 +619,12 @@ class ServiceItem extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => Newappointment(
-                          hint: hint ,
-                        )),
+                        MaterialPageRoute(
+                          builder: (_) => Newappointment(
+                           splasData: splashData,
+                            splashData: splashData,
+                          ),
+                        ),
                       ),
                       child: Text(
                         "Book now",

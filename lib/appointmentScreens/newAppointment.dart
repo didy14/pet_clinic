@@ -117,14 +117,8 @@ class _NewappointmentState extends State<Newappointment> {
   @override
   void initState() {
     services2 = widget.splashData["services"];
-    pets2 = widget.splashData["pets"];
+    pets2 = widget.splashData["pets_spicies"];
 
-    // if (widget.hint == null) {
-    //   selectedHint = selectedHint;
-    // } else {
-    //   selectedHint = widget.hint;
-    //   selectedServices = selectedHint;
-    // }
 
     super.initState();
   }

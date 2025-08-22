@@ -387,7 +387,9 @@ class _DashboardState extends State<Dashboard> {
               label: 'My Pets',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => Mypetsscreen()),
+                MaterialPageRoute(builder: (_) => Mypetsscreen(
+                  splashData: widget.splashData,
+                )),
               ),
             ),
             SpeedDialChild(

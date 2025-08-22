@@ -1,16 +1,30 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_login/MyPets/addPets.dart';
 import 'package:user_login/MyPets/deletePets.dart';
+import 'package:user_login/utilis/config.dart';
 
 class Mypetsscreen extends StatefulWidget {
-  const Mypetsscreen({super.key});
+  final dynamic splashData;
+  const Mypetsscreen({super.key, this.splashData});
 
   @override
   State<Mypetsscreen> createState() => _MypetsscreenState();
 }
 
 class _MypetsscreenState extends State<Mypetsscreen> {
+  String user_id = "";
+  @override
+  void initState() {
+    preparedData();
+    all_pets();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +49,9 @@ class _MypetsscreenState extends State<Mypetsscreen> {
             label: "Add Pet",
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => Addpets()),
+              MaterialPageRoute(
+                builder: (_) => Addpets(splashData: widget.splashData),
+              ),
             ),
           ),
         ],
@@ -125,7 +141,37 @@ class _MypetsscreenState extends State<Mypetsscreen> {
     );
   }
 
-_allPets(){
+  all_pets() async {
+    String url = Config.all_pets;
+    Dio dio = Dio();
+    Options options = Options(responseType: ResponseType.plain);
+    options.contentType = 'application/x-www-form-urlencoded';
 
-}
+    try {
+      Response response = await dio.post(url, data: "", options: options);
+
+      dynamic decodedString = jsonDecode(response.toString());
+      dynamic code = decodedString['code'];
+
+      if (code == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('A new pet was added successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error in adding pet please try again later')),
+        );
+      }
+    } on DioError catch (exception) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Network error: ${exception.message}')),
+      );
+    } catch (exception) {}
+  }
+  
+  void preparedData() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    user_id = preferences.getString(Config.user_id)!;
+    
+  }
 }

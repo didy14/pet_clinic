@@ -234,9 +234,15 @@ class _LoginPageState extends State<LoginPage> {
       String message = decodedString['message'];
 
       if (message == "Authenticated") {
+        print("hapa");
         String token = decodedString['token'];
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString(Config.token, token);
+
+
+        String user_id = decodedString['user_id'].toString();
+        
+        preferences.setString(Config.user_id, user_id);
 
         fetchingSplash();
       } else {
@@ -275,16 +281,17 @@ class _LoginPageState extends State<LoginPage> {
       dynamic decodedString = jsonDecode(response.toString());
       dynamic code = decodedString['code'];
       String message = decodedString['message'];
-      
+
       if (code == 200) {
         dynamic data = decodedString['data'];
         String splashData = decodedString['data'].toString();
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setString(Config.splashData, splashData);
-        
-        Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard(
-          splashData: data
-        )));
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => Dashboard(splashData: data)),
+        );
       } else {
         setState(() {
           _isloading = false;

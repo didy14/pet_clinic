@@ -7,5 +7,6 @@ class Config {
   static String add_pets = "$endpoint/add_pets";
   static String all_pets = "$endpoint/all_pets";
   static String token = "token";
+  static String user_id = "userObj.user_id";
   static String splashData = "splashData";
 }

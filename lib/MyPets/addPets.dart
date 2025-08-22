@@ -3,13 +3,16 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:user_login/Dashboards/user_dashboard.dart';
 import 'package:user_login/MyPets/myPetsScreen.dart';
 import 'dart:io';
 
 import 'package:user_login/utilis/config.dart';
 
 class Addpets extends StatefulWidget {
-  const Addpets({super.key});
+  final dynamic splashData;
+  const Addpets({super.key, this.splashData});
 
   @override
   State<Addpets> createState() => _AddpetsState();
@@ -21,6 +24,7 @@ class _AddpetsState extends State<Addpets> {
   final TextEditingController speciesController = TextEditingController();
   final TextEditingController colorController = TextEditingController();
   File? imageFile;
+  String user_id = "";
 
   Future<void> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -32,11 +36,17 @@ class _AddpetsState extends State<Addpets> {
   }
 
   List<dynamic> sex = [];
-  List<dynamic> pet_spicies = [];
+  List<dynamic> pets_species = [];
   String? selectedSex;
   String? selectedSpecies;
   String? selectedHint = "Choose";
 
+  void initState() {
+    sex = widget.splashData["sex"];
+    pets_species = widget.splashData["pets_species"];
+    prepareData();
+    super.initState();
+  }
   // void submitPet() {
   //   final name = nameController.text.trim();
   //   final sex = sexController.text.trim();
@@ -60,6 +70,9 @@ class _AddpetsState extends State<Addpets> {
 
   @override
   Widget build(BuildContext context) {
+    print("👌👌$pets_species");
+    print("hapa😂${widget.splashData}");
+
     return Scaffold(
       appBar: AppBar(title: const Text("Add New Pet")),
       body: Padding(
@@ -120,7 +133,8 @@ class _AddpetsState extends State<Addpets> {
               ),
             ),
             SizedBox(height: 20),
-
+            Text("Type", style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
             Container(
               width: double.infinity,
               height: 40,
@@ -134,10 +148,10 @@ class _AddpetsState extends State<Addpets> {
                   isExpanded: true,
                   value: selectedSpecies,
                   decoration: InputDecoration.collapsed(hintText: selectedHint),
-                  items: pet_spicies.map((item) {
+                  items: pets_species.map((item) {
                     return DropdownMenuItem<String>(
-                      value: item["pet_species_id"].toString(),
-                      child: Text(item["pets__species_name"]),
+                      value: item["pets_species_id"].toString(),
+                      child: Text(item["pet__species_name"]),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -148,7 +162,7 @@ class _AddpetsState extends State<Addpets> {
                 ),
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(height: 30),
 
             ElevatedButton(onPressed: validate, child: const Text("Add Pet")),
           ],
@@ -158,14 +172,23 @@ class _AddpetsState extends State<Addpets> {
   }
 
   validate() {
+    print(selectedSex);
     if (nameController.text.trim() == "") {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Please fill pet name ')));
-    } else if (sexController.text.trim() == "") {
+    } else if (colorController.text.trim() == "") {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Please write pet sex')));
+      ).showSnackBar(SnackBar(content: Text('plese write pets color')));
+    } else if (selectedSex == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please choose pets sex')));
+    } else if (selectedSpecies == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please choose pets Type')));
     } else {
       addPets();
     }
@@ -179,12 +202,13 @@ class _AddpetsState extends State<Addpets> {
 
     Map<String, String> postedData = {
       "pet_name": nameController.text,
-      "pet_species_id": speciesController.text,
-      "user_id": colorController.text,
+      "pet_species_id": selectedSpecies!,
+      "user_id": user_id,
       "pet_color": colorController.text,
-      "pet_sex": sexController.text,
+      "sex_id": selectedSex!,
     };
-    String jsonPlayload = jsonEncode(postedData);
+    //String jsonPlayload = jsonEncode(postedData);
+    print("postedData🤦‍♀️🤦‍♀️$postedData");
     try {
       Response response = await dio.post(
         url,
@@ -197,6 +221,9 @@ class _AddpetsState extends State<Addpets> {
       String message = decodedString['message'];
 
       if (code == 200) {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard(
+          splashData: widget.splashData,
+        )));
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('A new pet was added successfully')),
         );
@@ -210,5 +237,11 @@ class _AddpetsState extends State<Addpets> {
         SnackBar(content: Text('Network error: ${exception.message}')),
       );
     } catch (exception) {}
+  }
+
+  void prepareData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    user_id = preferences.getString(Config.user_id)!;
+    print("user_id $user_id");
   }
 }

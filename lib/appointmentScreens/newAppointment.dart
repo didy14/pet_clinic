@@ -10,10 +10,9 @@ import 'package:user_login/utilis/config.dart';
 import 'dart:convert'; // for decoding string to json
 
 class Newappointment extends StatefulWidget {
-  final dynamic splasData;
-  //final dynamic hint;
+ // final dynamic splasData;
   final dynamic splashData;
-  const Newappointment({super.key, this.splasData, this.splashData});
+  const Newappointment({super.key, this.splashData});
 
   @override
   State<Newappointment> createState() => _NewappointmentState();
@@ -68,12 +67,7 @@ class _NewappointmentState extends State<Newappointment> {
   dynamic timeSlotData;
   String? selectedPet;
 
-  List<String> services = [
-    'Bathing',
-    'Grooming',
-    'Hair Triming',
-    'Vaccination',
-  ];
+  
   String? selectedServices;
 
   DateTime? selectedDate;
@@ -122,8 +116,8 @@ class _NewappointmentState extends State<Newappointment> {
   bool isCurrentStep = false;
   @override
   void initState() {
-    services2 = widget.splasData["services"];
-    pets2 = widget.splasData["pets"];
+    services2 = widget.splashData["services"];
+    pets2 = widget.splashData["pets"];
 
     // if (widget.hint == null) {
     //   selectedHint = selectedHint;
@@ -311,62 +305,6 @@ class _NewappointmentState extends State<Newappointment> {
           ),
 
           const SizedBox(height: 20),
-
-          // Submit Button
-          //   Center(
-          //     child: GestureDetector(
-          //       onTap: () {
-          //         if (selectedServices == null) {
-          //           ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(
-          //               content: Text("Please select a service."),
-          //             ),
-          //           );
-          //         } else if (selectedPet == null) {
-          //           ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(content: Text("Please select a pet.")),
-          //           );
-          //         } else if (selectedDate == null) {
-          //           ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(
-          //               content: Text("Please choose a date."),
-          //             ),
-          //           );
-          //         } else if (selectedTime == null) {
-          //           ScaffoldMessenger.of(context).showSnackBar(
-          //             const SnackBar(
-          //               content: Text("Please choose a time."),
-          //             ),
-          //           );
-          //         } else {
-          //           showDialog(
-          //             context: context,
-          //             builder: (_) => Summarydialog(
-          //               service: selectedServices,
-          //               pet: selectedPet,
-          //               Date: selectedDate,
-          //               Time: selectedTime,
-          //             ),
-          //           );
-          //         }
-          //       },
-          //       child: Container(
-          //         height: 30,
-          //         width: 150,
-          //         decoration: BoxDecoration(
-          //           color: Colors.blue,
-          //           borderRadius: BorderRadius.circular(5),
-          //           border: Border.all(color: Colors.grey),
-          //         ),
-          //         child: Center(
-          //           child: Text(
-          //             "Submit",
-          //             style: TextStyle(color: Colors.white),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
         ],
       ),
     );
@@ -412,7 +350,7 @@ class _NewappointmentState extends State<Newappointment> {
         if (code == 200) {
           dynamic data = decodedString["data"];
           timeSlotData = data;
-          print("here❤️:${timeSlotData.length}");
+          //print("here❤️:${timeSlotData.length}");
           setState(() {
             _activeCurrentStep += 1;
           });

@@ -8,9 +8,9 @@ import 'package:user_login/appointmentScreens/newAppointment.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Appointmentscreen extends StatefulWidget {
-  final dynamic  splashData;
-  final dynamic splasData;
-  const Appointmentscreen({super.key, this.splashData, this.splasData});
+  final dynamic splashData;
+  
+  const Appointmentscreen({super.key, this.splashData});
 
   @override
   State<Appointmentscreen> createState() => _AppointmentscreenState();
@@ -40,6 +40,7 @@ class _AppointmentscreenState extends State<Appointmentscreen>
 
   @override
   Widget build(BuildContext context) {
+    
     final now = DateTime.now();
     final remaining = nextAppointment.difference(now);
     final days = remaining.inDays;
@@ -65,8 +66,8 @@ class _AppointmentscreenState extends State<Appointmentscreen>
                     MaterialPageRoute(
                       builder: (_) => Newappointment(
                         splashData: widget.splashData,
-                        splasData: widget.splasData,
-                        ),
+                        
+                      ),
                     ),
                   );
                 },
@@ -125,7 +126,7 @@ class _AppointmentscreenState extends State<Appointmentscreen>
             tabs: const [
               Tab(text: "All"),
               Tab(text: "Upcoming"),
-               Tab(text: "Completed"),
+              Tab(text: "Completed"),
               Tab(text: "Pending"),
             ],
           ),

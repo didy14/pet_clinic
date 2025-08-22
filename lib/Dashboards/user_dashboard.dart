@@ -36,6 +36,7 @@ class _DashboardState extends State<Dashboard> {
         key: _scaffoldKey,
         endDrawer: Sidebar(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.amber,
           elevation: 0,
           title: const Text(
@@ -168,7 +169,7 @@ class _DashboardState extends State<Dashboard> {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => Newappointment(
-                                  splasData: widget.splashData,
+                                  
                                   splashData: widget.splashData,
                                 ),
                               ),
@@ -234,7 +235,11 @@ class _DashboardState extends State<Dashboard> {
                         child: GestureDetector(
                           onTap: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => Services()),
+                            MaterialPageRoute(builder: (_) => Services(
+                               //splasData: widget.splashData,
+                                  splashData: widget.splashData,
+                            )),
+                            
                           ),
                           child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
                         ),
@@ -378,8 +383,8 @@ class _DashboardState extends State<Dashboard> {
             ),
 
             SpeedDialChild(
-              child: Icon(Icons.add, color: Colors.amberAccent, size: 40),
-              label: 'Add Pet',
+              child: Icon(Icons.add , color: Colors.amberAccent, size: 40),
+              label: 'My Pets',
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => Mypetsscreen()),
@@ -395,7 +400,7 @@ class _DashboardState extends State<Dashboard> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => Appointmentscreen(
-                  splasData: widget.splashData,
+                  
                   splashData: widget.splashData,
                 )),
               ),
@@ -621,7 +626,7 @@ class ServiceItem extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (_) => Newappointment(
-                           splasData: splashData,
+                           
                             splashData: splashData,
                           ),
                         ),

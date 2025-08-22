@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:user_login/MyPets/addPets.dart';
+import 'package:user_login/MyPets/deletePets.dart';
 
 class Mypetsscreen extends StatefulWidget {
   const Mypetsscreen({super.key});
@@ -12,161 +14,118 @@ class _MypetsscreenState extends State<Mypetsscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              const Text(
-                "MyPets",
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: const Text("MyPets"),
+      ),
+
+      body: ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return _myPets();
+        },
+      ),
+      floatingActionButton: SpeedDial(
+        spaceBetweenChildren: 20,
+        icon: Icons.menu,
+        backgroundColor: Colors.amber,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.add, color: Colors.amber),
+            label: "Add Pet",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => Addpets()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _myPets() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 110,
+        width: 50,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.amber),
+          borderRadius: BorderRadius.circular(0.5),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                height: 150,
+                width: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
                 ),
               ),
-              const SizedBox(height: 40),
-
-              // Row 1: Add New + Bella (only Add New navigates)
-              Row(
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const Addpets()),
-                      ),
-                      child: Container(
-                        height: 200,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Icon(
-                              Icons.add,
-                              size: 80,
-                              color: Colors.amberAccent,
-                            ),
-                            SizedBox(height: 10),
-                            Text("New", style: TextStyle(fontSize: 16)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-
-                  
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      child: Column(
-                        children: const [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('assets/images/Bella.jpg'),
+                  Text("Name: Bella"),
+                  Text("Sex: male"),
+                  Text("Color: brown"),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: BoxBorder.all(color: Colors.black),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Bella",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          child: GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => Addpets()),
                             ),
+                            child: Center(child: Text("Edit")),
                           ),
-                          SizedBox(height: 5),
-                          Text("Age: 2 years"),
-                          Text("Species: Dog"),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => Deletepets(),
+                            );
+                          },
+                          child: Container(
+                            height: 20,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: BoxBorder.all(color: Colors.black),
+                            ),
+                            child: Center(child: Text("delete")),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-
-              const SizedBox(height: 20),
-
-              // Row 2: Max + Charlie (no navigation)
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      child: Column(
-                        children: const [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('assets/images/Max.jpg'),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Max",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text("Age: 3 years"),
-                          Text("Species: Cat"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      child: Column(
-                        children: const [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('assets/images/Charlie.jpg'),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Charlie",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text("Age: 1.5 years"),
-                          Text("Species: Rabbit"),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+
+_allPets(){
+
+}
 }

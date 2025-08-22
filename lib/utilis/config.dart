@@ -4,6 +4,8 @@ class Config {
   static String login = "$endpoint/login";
   static String splash = "$endpoint/splash";
   static String slots_availability = "$endpoint/slots_availability";
+  static String add_pets = "$endpoint/add_pets";
+  static String all_pets = "$endpoint/all_pets";
   static String token = "token";
   static String splashData = "splashData";
 }

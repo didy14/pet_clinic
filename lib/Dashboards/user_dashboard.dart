@@ -30,6 +30,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    print("splash data🎶🎶: ${widget.splashData}");
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -169,7 +170,6 @@ class _DashboardState extends State<Dashboard> {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => Newappointment(
-                                  
                                   splashData: widget.splashData,
                                 ),
                               ),
@@ -235,11 +235,12 @@ class _DashboardState extends State<Dashboard> {
                         child: GestureDetector(
                           onTap: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => Services(
-                               //splasData: widget.splashData,
-                                  splashData: widget.splashData,
-                            )),
-                            
+                            MaterialPageRoute(
+                              builder: (_) => Services(
+                                //splasData: widget.splashData,
+                                splashData: widget.splashData,
+                              ),
+                            ),
                           ),
                           child: Icon(Icons.arrow_forward_ios_sharp, size: 20),
                         ),
@@ -346,7 +347,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-//for menu
+        //for menu
         floatingActionButton: SpeedDial(
           spaceBetweenChildren: 20,
           icon: Icons.menu,
@@ -383,13 +384,14 @@ class _DashboardState extends State<Dashboard> {
             ),
 
             SpeedDialChild(
-              child: Icon(Icons.add , color: Colors.amberAccent, size: 40),
+              child: Icon(Icons.add, color: Colors.amberAccent, size: 40),
               label: 'My Pets',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => Mypetsscreen(
-                  splashData: widget.splashData,
-                )),
+                MaterialPageRoute(
+                  builder: (_) => Mypetsscreen(
+                    splashData: widget.splashData),
+                ),
               ),
             ),
             SpeedDialChild(
@@ -401,10 +403,10 @@ class _DashboardState extends State<Dashboard> {
               label: 'Appointments',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => Appointmentscreen(
-                  
-                  splashData: widget.splashData,
-                )),
+                MaterialPageRoute(
+                  builder: (_) =>
+                      Appointmentscreen(splashData: widget.splashData),
+                ),
               ),
             ),
           ],
@@ -577,7 +579,8 @@ class ServiceItem extends StatelessWidget {
     required this.text,
     required this.ImageUrl,
     this.color = Colors.white,
-    required this.hint, this.splashData,
+    required this.hint,
+    this.splashData,
   });
 
   @override
@@ -627,10 +630,8 @@ class ServiceItem extends StatelessWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => Newappointment(
-                           
-                            splashData: splashData,
-                          ),
+                          builder: (_) =>
+                              Newappointment(splashData: splashData),
                         ),
                       ),
                       child: Text(
@@ -725,6 +726,8 @@ class Doctorwidget extends StatelessWidget {
       ),
     );
   }
+
+ 
 }
 
 /*import 'package:flutter/material.dart';

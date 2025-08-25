@@ -270,6 +270,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void fetchingSplash() async {
+    
     String url = Config.splash;
     Dio dio = Dio();
     Options options = Options(responseType: ResponseType.plain);

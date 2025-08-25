@@ -10,7 +10,9 @@ import 'package:user_login/utilis/config.dart';
 
 class Mypetsscreen extends StatefulWidget {
   final dynamic splashData;
-  const Mypetsscreen({super.key, this.splashData});
+  final dynamic petsData;
+
+  const Mypetsscreen({super.key, this.splashData, this.petsData});
 
   @override
   State<Mypetsscreen> createState() => _MypetsscreenState();
@@ -18,10 +20,12 @@ class Mypetsscreen extends StatefulWidget {
 
 class _MypetsscreenState extends State<Mypetsscreen> {
   String user_id = "";
+  dynamic petsData;
   @override
   void initState() {
     preparedData();
-    all_pets();
+    // all_pets();
+
     super.initState();
   }
 
@@ -33,10 +37,44 @@ class _MypetsscreenState extends State<Mypetsscreen> {
         title: const Text("MyPets"),
       ),
 
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return _myPets();
+      body: FutureBuilder(
+        future: Future.delayed(Duration(seconds: 2), () {
+          
+          print("Didy's Pets $petsData");
+        }),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // If we got an error
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  '${snapshot.error} occurred',
+                  style: TextStyle(fontSize: 18),
+                ),
+              );
+            }
+            // else if (!snapshot.hasData) {
+            //   return Text(
+            //     '${!snapshot.hasData} No Pets',
+            //     style: TextStyle(fontSize: 18),
+            //   );
+            //   // if we got our data
+            // }
+            else if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: petsData.length,
+                itemBuilder: (context, index) {
+                  return _myPets(petsData[index]);
+                },
+              );
+            } else {
+              return Text("no data");
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Text("${snapshot.error}");
+          }
         },
       ),
       floatingActionButton: SpeedDial(
@@ -59,7 +97,7 @@ class _MypetsscreenState extends State<Mypetsscreen> {
     );
   }
 
-  _myPets() {
+  _myPets(dynamic petData) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -87,9 +125,9 @@ class _MypetsscreenState extends State<Mypetsscreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Name: Bella"),
-                  Text("Sex: male"),
-                  Text("Color: brown"),
+                  Text("Name: ${petData["pet_name"]}"),
+                  Text("Sex: ${petData["sex_id"]}"),
+                  Text("Color: ${petData["pet_color"]}"),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -146,21 +184,26 @@ class _MypetsscreenState extends State<Mypetsscreen> {
     Dio dio = Dio();
     Options options = Options(responseType: ResponseType.plain);
     options.contentType = 'application/x-www-form-urlencoded';
-
+    String postedData = "user_id=$user_id";
+    //  print("user_id🤣🤣=$user_id");
     try {
-      Response response = await dio.post(url, data: "", options: options);
+      Response response = await dio.get(
+        url,
+        data: postedData,
+        options: options,
+      );
 
+      print("response  wa dida=$response");
       dynamic decodedString = jsonDecode(response.toString());
       dynamic code = decodedString['code'];
 
       if (code == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('A new pet was added successfully')),
-        );
+        dynamic data = decodedString["pets"];
+
+        petsData = data;
+        print("pestData😎😎 = $petsData");
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error in adding pet please try again later')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('')));
       }
     } on DioError catch (exception) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -168,10 +211,11 @@ class _MypetsscreenState extends State<Mypetsscreen> {
       );
     } catch (exception) {}
   }
-  
-  void preparedData() async{
+
+  void preparedData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     user_id = preferences.getString(Config.user_id)!;
-    
+    print(user_id);
+    all_pets();
   }
 }

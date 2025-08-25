@@ -10,9 +10,9 @@ import 'package:user_login/utilis/config.dart';
 import 'dart:convert'; // for decoding string to json
 
 class Newappointment extends StatefulWidget {
- // final dynamic splasData;
+  final dynamic splasData;
   final dynamic splashData;
-  const Newappointment({super.key, this.splashData});
+  const Newappointment({super.key, this.splashData, this.splasData});
 
   @override
   State<Newappointment> createState() => _NewappointmentState();
@@ -67,7 +67,6 @@ class _NewappointmentState extends State<Newappointment> {
   dynamic timeSlotData;
   String? selectedPet;
 
-  
   String? selectedServices;
 
   DateTime? selectedDate;
@@ -117,14 +116,14 @@ class _NewappointmentState extends State<Newappointment> {
   @override
   void initState() {
     services2 = widget.splashData["services"];
-    pets2 = widget.splashData["pets_spicies"];
-
+    pets2 = widget.splashData["pets"];
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("splash data😍😍 : ${widget.splashData["pets"]}");
     return Center(
       child: SafeArea(
         child: Scaffold(
